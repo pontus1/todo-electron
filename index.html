@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Todo</title>
+        <link rel="stylesheet" href="./css/fonts.css">
+        <link rel="stylesheet" href="./css/style.css">
+    </head>
+    <body>
+
+        <header>
+            <button type="button" id="create-new-todo" class="btn btn-round btn-shadow btn-secondary"><i class="material-icons">add</i></button>
+        </header>
+
+        <main>
+            <div class="list-container">
+
+                <div class="list">
+                    <h3>Todo</h3>
+                    <ul id="todos">
+
+                    </ul>
+                </div>
+
+                <div class="list">
+                    <h3>Done</h3>
+                    <ul id="dones">
+
+                    </ul>
+                </div>
+
+            </div>
+        </main>
+
+
+        <script>
+            require('./renderer');
+        </script>
+    </body>
+</html>

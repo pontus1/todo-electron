@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Create Todo</title>
+        <link rel="stylesheet" href="./style.css">
+    </head>
+    <body>
+        <h1>What should you do?</h1>
+
+        <input id="title-input" type="text" placeholder="Enter a title">
+        <textarea placeholder="Add a description (optional)" rows="8" cols="80"></textarea>
+
+        <button type="button" id="add-new-todo">Add Todo</button>
+        <button type="button" id="cancel-new-todo">Cancel</button>
+
+        <script>
+            require('./create-todo-renderer');
+        </script>
+    </body>
+</html>

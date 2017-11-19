@@ -1,0 +1,123 @@
+* {
+    font-family: 'Roboto';
+}
+
+body {
+  color: #333;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.list-container {
+    display: flex;
+    justify-content: space-between;
+    /*border: 1px solid red;*/
+}
+
+.list {
+    width: 50%;
+    margin: 0 20px;
+}
+
+ul {
+    padding: 0;
+}
+
+/* Todo item */
+li {
+    /*display: flex;
+    justify-content: space-between;
+    align-items: center;*/
+    height: 50px;
+    margin-bottom: 15px;
+    list-style-type: none;
+    /*padding: 0 15px;*/
+    /*cursor: pointer;*/
+    /*background-color: #be9c91;*/
+}
+
+li {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+li:hover {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 8px 10px rgba(0,0,0,0.22);
+}
+
+li.expanded {
+    height: 300px;
+}
+
+li > .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    margin-bottom: 15px;
+    padding: 0 15px;
+    cursor: pointer;
+}
+
+/* BUTTONS */
+
+button {
+    width: 100px;
+    height: 50px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
+
+.btn {
+    border: none;
+    cursor: pointer;
+}
+
+.btn > * {
+    pointer-events: none;
+}
+
+.btn:focus {
+    outline: none;
+}
+
+.btn-primary {
+    background-color: #8d6e63;  /* primary */
+    color: dark: #5f4339;       /* primary dark */
+}
+
+.btn-secondary {
+    background-color: #ff9800;  /* secondary */
+    color: #c66900;             /* secondary dark */
+}
+
+.btn-shadow {
+    box-shadow: 0 5px 5px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.btn-round {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+}
+
+.btn-small {
+    width: 40px;
+    height: 40px;
+}
+
+/* primary: #8d6e63 */
+/* primary light: #be9c91 */
+/* primary dark: #5f4339 */
+
+/* secondary: #ff9800 */
+/* secondary light: #ffc947 */
+/* secondary dark: #c66900 */
+
+header {
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px 20px 0;
+}

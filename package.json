@@ -1,0 +1,26 @@
+{
+  "name": "todo-app",
+  "productName": "Todo",
+  "author": "pellboj",
+  "version": "1.0.0",
+  "description": "A simple Electron TODO application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron main.js",
+    "package": "build"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "devDependencies": {
+    "devtron": "^1.4.0",
+    "electron": "^1.7.9",
+    "electron-builder": "^19.45.4"
+  },
+  "build": {
+    "appId": "com.Nothing.Pellboj",
+    "files": "!build-assets${/*}"
+  },
+  "dependencies": {
+    "material-design-icons": "^3.0.1"
+  }
+}
