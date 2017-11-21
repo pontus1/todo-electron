@@ -1,7 +1,14 @@
 const { remote, ipcRenderer } = require('electron');
 const path = require('path');
 require('devtron').install(); // debug tool
-const { createIcon, createButton } = require('./node-factory');
+const {
+    createIcon,
+    createButton,
+    createHeader,
+    createBody,
+    createFooter
+} = require('./node-factory');
+const { emptyNode } = require('./utils');
 const currentWindow = remote.getCurrentWindow(); // active Window
 
 /* DOM Nodes */
@@ -15,18 +22,17 @@ const createTodoBtn = document.querySelector('#create-new-todo');
 //const { todos, addTodo, removeTodo } = require('./todos')
 
 const todos = [
-    { id: 1, text: 'Do something', done: false },
-    { id: 2, text: 'Do something else', done: false },
-    { id: 3, text: 'Eat', done: false },
-    { id: 4, text: 'Sleep', done: true },
-    { id: 5, text: 'Be awake', done: true },
-    { id: 6, text: 'Run', done: false }
+    { id: 1, text: 'Do something', description: 'dfgkdjhgf djhfkh ghdgjfhgk kdfhjgdfh dfgd', done: false },
+    { id: 2, text: 'Do something else', description: 'dfdsh', done: false },
+    { id: 3, text: 'Eat', description: 'fdjghkjhkjdhfgkj dkjfhkdjfhgkjdhfg kdjfhgkdhfgj dkgjhdfkgdgk dkfjhkghdfkjhg ghghg dkgh dhgghd dkfjghdkhg ', done: false },
+    { id: 4, text: 'Sleep', description: 'dfgfhgfdgjgjfhkgj xfghgj fgjgjh', done: true },
+    { id: 5, text: 'Be awake', description: '', done: true },
+    { id: 6, text: 'Run', description: 'gfhfghfgh fghfghfghghfghh fdfksgs 93486 sdjdjgsfhf hdjh', done: false }
 ];
 
 let id = 6;
 
 function addTodo (text) {
-
     const newTodo = {
         id: ++id,
         text: text,
@@ -34,7 +40,6 @@ function addTodo (text) {
     }
     todos.push(newTodo);
     renderTodos();
-    // return [...todos, newTodo];
 }
 
 function toggleDone (id) {
@@ -47,17 +52,14 @@ function toggleDone (id) {
 }
 
 function removeTodo (id) {
-    todos = todos.filter((todo) => todo.id !== id);
+    todos.map((todo, index) => {
+        if (todo.id == id) {
+            todos.splice(index, 1);
+        }
+    });
     renderTodos();
-    // return todos.filter((todo) => todo.id !== id);
 }
 
-
-function emptyNode(node) {
-    while(node.firstChild) {
-        node.removeChild(node.firstChild);
-    }
-}
 
 function renderTodos () {
 
@@ -66,36 +68,34 @@ function renderTodos () {
 
     todos.map((todo) => {
 
-        const toggleStatusBtn = createButton({
-            icon: 'check',
-            id: 'todo-' + todo.id,
-            classes: ['btn', 'btn-round', 'btn-small', 'btn-primary'],
-            clickHandler: function (e) {
-                e.stopPropagation();
-                toggleDone(e.target.id.match(/\d+/g).map(Number));
-            }
-        });
+        /* Header */
+        const todoHeader = createHeader(todo.text);
 
-        var todoHeader = document.createElement('div');
-        todoHeader.classList.add('header');
-
-        todoHeader.innerHTML = todo.text;
-        todoHeader.appendChild(toggleStatusBtn);
-
-        var todoItem = document.createElement('li');
+        /* Todo item */
+        const todoItem = document.createElement('li');
         todoItem.appendChild(todoHeader);
 
-        todoItem.addEventListener('click', function () {
-            toggleClass(this, 'expanded');
-        });
 
-        // var todoItem = document.createElement('li');
-        // todoItem.innerHTML = todo.text;
-        // todoItem.appendChild(toggleStatusBtn);
-        //
-        // todoItem.addEventListener('click', function () {
-        //     toggleClass(this, 'expanded');
-        // });
+        todoHeader.addEventListener('click', function () {
+            // toggleClass(this, 'expanded');
+            if (this.parentNode.classList.contains('expanded')) {
+                this.parentNode.classList.remove('expanded');
+                removeTodoBody(this.parentNode);
+                removeTodoFooter(this.parentNode);
+                this.children[0].children[0].innerHTML = 'expand_more';
+            } else {
+                this.parentNode.classList.add('expanded');
+                const that = this;
+                /* Timeout to match css transition */
+                setTimeout(() => {
+                    addTodoBody(that.parentNode, todo);
+                    addTodoFooter(that.parentNode, todo);
+                }, 150);
+
+                this.children[0].children[0].innerHTML = 'expand_less';
+            }
+
+        });
 
         if (todo.done) {
             doneList.appendChild(todoItem);
@@ -105,6 +105,26 @@ function renderTodos () {
     });
 }
 
+function addTodoBody (todoItem, todo) {
+    const todoBody = createBody(todo);
+    todoItem.appendChild(todoBody);
+}
+
+function addTodoFooter (todoItem, todo) {
+    const todoFooter = createFooter(todo, removeTodo, toggleDone);
+    todoItem.appendChild(todoFooter);
+}
+
+function removeTodoBody (todoItem) {
+    const elems = todoItem.getElementsByClassName('body');
+    todoItem.removeChild(elems[0]);
+}
+function removeTodoFooter (todoItem) {
+    const elems = todoItem.getElementsByClassName('footer');
+    todoItem.removeChild(elems[0]);
+}
+
+/* Render Todos on init */
 renderTodos();
 
 ipcRenderer.on('add-new-todo', (event, text) => {
@@ -130,6 +150,10 @@ createTodoBtn.addEventListener('click', () => {
       remoteWin = null;
     });
 });
+
+function createAddBtn () {
+
+}
 
 // TODO: put in helper class
 function toggleClass(element, cls) {
