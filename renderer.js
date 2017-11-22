@@ -139,10 +139,9 @@ ipcRenderer.on('add-new-todo', (event, text) => {
 
 createTodoBtn.addEventListener('click', () => {
     let remoteWin = new remote.BrowserWindow({
-        width: 520,
-        height: 300,
-        modal: true,
-        backgroundColor: '#66CD00'
+        width: 600,
+        height: 600,
+        modal: true
     });
     remoteWin.loadURL(path.join('file://', __dirname, 'create-todo-modal.html'));
 

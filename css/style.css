@@ -10,12 +10,24 @@ body {
 .list-container {
     display: flex;
     justify-content: space-between;
-    /*border: 1px solid red;*/
+    /*flex-wrap: wrap;*/
+}
+
+@media (max-width: 600px) {
+    .list-container {
+        flex-wrap: wrap;
+    }
 }
 
 .list {
     width: 50%;
     margin: 0 20px;
+}
+
+@media (max-width: 600px) {
+    .list {
+        width: 100%;
+    }
 }
 
 ul {
@@ -91,7 +103,7 @@ li > .footer > .btn:last-child {
 
 button {
     width: 100px;
-    height: 50px;
+    height: 40px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -151,8 +163,43 @@ header {
     margin: 20px 20px 0;
 }
 
+/* ADD Todo modal */
+.form-container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    max-width: 500px;
+    margin: 15vh auto;
+}
+
+.form-container > .btn-container {
+    align-self: flex-end;
+}
+
+.form-container > input, textarea {
+    margin-bottom: 15px;
+    /*padding: 15px;*/
+}
+
+input['type=text'] {
+    height: 40px;
+}
+
 /* GENERAL */
 .transparent {
     background: none;
     background-color: transparent;
+}
+
+textarea,
+input[type='text'] {
+    font-size: 14px;
+    padding: 15px;
+    border: 1px solid #000;
+}
+
+input[type='text'] {
+    height: 40px;
+    max-height: 40px;
+    padding: 0 15px;
 }

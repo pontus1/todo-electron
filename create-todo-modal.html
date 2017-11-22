@@ -3,16 +3,27 @@
     <head>
         <meta charset="utf-8">
         <title>Create Todo</title>
-        <link rel="stylesheet" href="./style.css">
+        <link rel="stylesheet" href="./css/fonts.css">
+        <link rel="stylesheet" href="./css/style.css">
     </head>
     <body>
-        <h1>What should you do?</h1>
 
-        <input id="title-input" type="text" placeholder="Enter a title">
-        <textarea placeholder="Add a description (optional)" rows="8" cols="80"></textarea>
+        <main>
+            <div class="form-container">
+                <h3>Add Todo</h3>
 
-        <button type="button" id="add-new-todo">Add Todo</button>
-        <button type="button" id="cancel-new-todo">Cancel</button>
+                <input id="title-input" type="text" placeholder="Enter a title">
+                <textarea placeholder="Add a description (optional)" rows="8" cols="80"></textarea>
+
+                <div class="btn-container">
+                    <button type="button" id="add-new-todo" class="btn btn-shadow btn-secondary">Add</button>
+                    <button type="button" id="cancel-new-todo" class="btn btn-shadow btn-primary">Cancel</button>
+                </div>
+
+            </div>
+
+        </main>
+
 
         <script>
             require('./create-todo-renderer');
