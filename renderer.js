@@ -9,6 +9,7 @@ const {
     createFooter
 } = require('./node-factory');
 const { emptyNode } = require('./utils');
+const { loadTodos, saveTodos } = require('./todos-dao'); // persistance
 const currentWindow = remote.getCurrentWindow(); // active Window
 
 /* DOM Nodes */
@@ -17,20 +18,9 @@ const todoList = document.querySelector('#todos');
 const doneList = document.querySelector('#dones');
 const createTodoBtn = document.querySelector('#create-new-todo');
 
-// title.innerHTML = "What to do?";
 
-//const { todos, addTodo, removeTodo } = require('./todos')
-
-const todos = [
-    { id: 1, text: 'Do something', description: 'dfgkdjhgf djhfkh ghdgjfhgk kdfhjgdfh dfgd', done: false },
-    { id: 2, text: 'Do something else', description: 'dfdsh', done: false },
-    { id: 3, text: 'Eat', description: 'fdjghkjhkjdhfgkj dkjfhkdjfhgkjdhfg kdjfhgkdhfgj dkgjhdfkgdgk dkfjhkghdfkjhg ghghg dkgh dhgghd dkfjghdkhg ', done: false },
-    { id: 4, text: 'Sleep', description: 'dfgfhgfdgjgjfhkgj xfghgj fgjgjh', done: true },
-    { id: 5, text: 'Be awake', description: '', done: true },
-    { id: 6, text: 'Run', description: 'gfhfghfgh fghfghfghghfghh fdfksgs 93486 sdjdjgsfhf hdjh', done: false }
-];
-
-let id = 6;
+const todos = loadTodos();
+let id = todos[todos.length -1].id;
 
 function addTodo (text) {
     const newTodo = {
@@ -39,6 +29,7 @@ function addTodo (text) {
         done: false
     }
     todos.push(newTodo);
+    saveTodos(todos);
     renderTodos();
 }
 
@@ -48,6 +39,7 @@ function toggleDone (id) {
             todo.done = !todo.done;
         }
     });
+    saveTodos(todos);
     renderTodos();
 }
 
@@ -57,6 +49,7 @@ function removeTodo (id) {
             todos.splice(index, 1);
         }
     });
+    saveTodos(todos);
     renderTodos();
 }
 
