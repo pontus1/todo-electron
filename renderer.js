@@ -1,13 +1,7 @@
 const { remote, ipcRenderer } = require('electron');
 const path = require('path');
 require('devtron').install(); // debug tool
-const {
-    createIcon,
-    createButton,
-    // createHeader,
-    // createBody,
-    // createFooter
-} = require('./node-factory');
+const { createIcon, createButton } = require('./node-factory');
 const { emptyNode } = require('./utils');
 const { loadTodos, saveTodos } = require('./todos-dao'); // persistance
 const currentWindow = remote.getCurrentWindow(); // active Window
@@ -25,7 +19,7 @@ let id = todos.length > 0 ? todos[todos.length -1].id : 1;
 function addTodo (title, description) {
     const newTodo = {
         id: ++id,
-        title: title, // TODO: change key to title
+        title: title,
         description: description,
         done: false
     }
@@ -65,7 +59,7 @@ function updateTodo (id, title, description) {
     renderTodos();
 }
 
-
+/* render */
 function renderTodos () {
 
     emptyNode(todoList);
@@ -80,9 +74,7 @@ function renderTodos () {
         const todoItem = document.createElement('li');
         todoItem.appendChild(todoHeader);
 
-
         todoHeader.addEventListener('click', function () {
-            // toggleClass(this, 'expanded');
             if (this.parentNode.classList.contains('expanded')) {
                 this.parentNode.classList.remove('expanded');
                 removeTodoBody(this.parentNode);
@@ -149,11 +141,11 @@ function createHeader (title) {
 }
 
 function createBody (todoItem, todo, editMode) {
+
     const body = document.createElement('div');
     body.classList.add('body');
 
     if (editMode) {
-
         const titleInput = document.createElement('input');
         titleInput.setAttribute('type', 'text');
         titleInput.value = todo.title;
@@ -162,14 +154,9 @@ function createBody (todoItem, todo, editMode) {
         body.classList.add('edit-mode');
         body.appendChild(titleInput);
         body.appendChild(descriptionInput);
-
     } else {
-
-        // const title = document.createElement('h3');
         const description = document.createElement('p');
-        // title.innerHTML = todo.title;
         description.innerHTML = todo.description ? todo.description : '¯\\_(ツ)_/¯';
-        // body.appendChild(title);
         body.appendChild(description);
     }
 
@@ -262,16 +249,10 @@ ipcRenderer.on('add-new-todo', (event, todo) => {
     addTodo(todo.title, todo.description);
 });
 
-// createTodoBtn.addEventListener('click', () => {
-//     ipcRenderer.send('open-add-todo-window');
-// });
-//
-// const openRemoteWindowBtn = document.querySelector('#open-remote-window');
-
 createTodoBtn.addEventListener('click', () => {
     let remoteWin = new remote.BrowserWindow({
         width: 600,
-        height: 600,
+        height: 500,
         modal: true
     });
     remoteWin.loadURL(path.join('file://', __dirname, 'create-todo-modal.html'));
@@ -280,29 +261,3 @@ createTodoBtn.addEventListener('click', () => {
       remoteWin = null;
     });
 });
-
-function createAddBtn () {
-
-}
-
-// TODO: put in helper class
-function toggleClass(element, cls) {
-    if (element.classList.contains(cls)) {
-        element.classList.remove(cls);
-    } else {
-        element.classList.add(cls);
-    }
-}
-
-// const remoteWin = new remote.BrowserWindow({
-//     width: 520,
-//     height: 300,
-//     modal: true
-// });
-// remoteWin.loadURL(path.join('file://', __dirname, 'create-todo-modal.html'));
-
-
-// ipcRender.send('show-create-todo-modal') --->
-// ipcMain.on('show-create-todo-modal', () => {
-//     createTodoWindow.show();
-// })

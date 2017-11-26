@@ -14,27 +14,13 @@ addBtn.addEventListener('click', () => {
 
     } else {
         ipcRenderer.send('show-empty-input-dialog');
-        // inform user that title needs to have some content
     }
 
 });
-
+s
 cancelBtn.addEventListener('click', () => {
-    // ipcRenderer.send('close-create-todo-window');
     var window = remote.getCurrentWindow();
        window.close();
 });
 
 titleInput.focus();
-
-// ipcRender.send('show-create-todo-modal') --->
-// ipcMain.on('show-create-todo-modal', () => {
-//     createTodoWindow.show();
-// })
-
-
-// ipcMain.on('request-add-todo', (event, text) => {
-//     console.log('text inside main: ', text);
-//     event.sender.send('add-new-todo', text);
-//     secondWindow.webContents.send('add-new-todo', arg);
-// });

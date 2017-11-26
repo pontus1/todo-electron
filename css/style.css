@@ -1,3 +1,11 @@
+/* primary:         #8d6e63 */
+/* primary light:   #be9c91 */
+/* primary dark:    #5f4339 */
+
+/* secondary:       #ff9800 */
+/* secondary light: #ffc947 */
+/* secondary dark:  #c66900 */
+
 * {
     font-family: 'Roboto';
 }
@@ -36,54 +44,41 @@ ul {
 
 /* Todo item */
 li {
-    /*display: flex;
-    justify-content: space-between;
-    align-items: center;*/
     min-height: 50px;
     margin-bottom: 15px;
     list-style-type: none;
-    /*padding: 0 15px;*/
-    /*cursor: pointer;*/
-    /*background-color: #be9c91;*/
-}
-
-li {
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
 
 li:hover {
-  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 8px 10px rgba(0,0,0,0.22);
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 8px 10px rgba(0,0,0,0.22);
 }
 
 li.expanded {
-    /*min-height: 300px;*/
+    min-height: 250px;
 }
 
 /* Expanded Todo */
-
 li > .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     min-height: 50px;
-    /*margin-bottom: 15px;*/
-    padding: 0 15px;
+    padding: 5px 15px;
     cursor: pointer;
     color: #8d6e63; /* primary */
     font-weight: bold;
 }
 
 li > .body {
-    /*height: calc(200px - 15px * 2); /* - padding-top & bottom */
+    height: calc(200px - 15px * 2); /* - padding-top & bottom */
+    display: flex;
+    flex-direction: column;
     padding: 0 15px;
     /* description text */
     font-size: 14px;
     text-align: justify;
-    /*color: #8d6e63; /* primary */
-    display: flex;
-    flex-direction: column;
-    /*border: 1px solid red;*/
 }
 
 li > .footer {
@@ -91,7 +86,6 @@ li > .footer {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    /*border: 1px solid blue;*/
 }
 
 li > .body > p {
@@ -100,7 +94,7 @@ li > .body > p {
 
 li > .body.edit-mode > input {
     font-weight: bold;
-    color: #8d6e63; /* primary */
+    color: #8d6e63;                 /* primary */
 }
 
 li > .body.edit-mode > textarea {
@@ -143,7 +137,7 @@ button {
 
 .btn-primary {
     background-color: #be9c91;  /* primary light */
-    color: #5f4339;       /* primary dark */
+    color: #5f4339;             /* primary dark */
 }
 
 .btn-secondary {
@@ -167,14 +161,6 @@ button {
     height: 40px;
 }
 
-/* primary: #8d6e63 */
-/* primary light: #be9c91 */
-/* primary dark: #5f4339 */
-
-/* secondary: #ff9800 */
-/* secondary light: #ffc947 */
-/* secondary dark: #c66900 */
-
 header {
     display: flex;
     justify-content: flex-end;
@@ -197,7 +183,6 @@ header {
 .form-container > input, textarea {
     margin-bottom: 15px;
     line-height: 1.5;
-    /*padding: 15px;*/
 }
 
 input['type=text'] {
