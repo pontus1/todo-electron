@@ -7,10 +7,11 @@ function createIcon (iconType) {
     return elem;
 }
 
-function createButton({ icon='', id='', classes=['btn'], clickHandler }) {
+function createButton({ icon='', text='', id='', classes=['btn'], clickHandler }) {
     const btn = document.createElement('button');
     btn.id = id;
     btn.appendChild(createIcon(icon));
+    text ? btn.innerHTML = text : '';
     for (className of classes) {
         btn.classList.add(className);
     }
@@ -44,7 +45,7 @@ function createBody (todo) {
     return body;
 }
 
-function createFooter (todo, removeTodo, toggleDone) {
+function createFooter (todo, removeTodo, toggleDone, editMode) {
 
     /* Edit button */
     const editBtn = createButton({
@@ -78,9 +79,13 @@ function createFooter (todo, removeTodo, toggleDone) {
 
     const footer = document.createElement('div');
     footer.classList.add('footer');
-    if (!todo.done) footer.appendChild(editBtn);
-    footer.appendChild(deleteBtn);
-    footer.appendChild(toggleStatusBtn);
+
+    if (!editMode) {
+        if (!todo.done) footer.appendChild(editBtn);
+        footer.appendChild(deleteBtn);
+        footer.appendChild(toggleStatusBtn);
+    }
+
     return footer;
 }
 

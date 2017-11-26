@@ -4,9 +4,9 @@ require('devtron').install(); // debug tool
 const {
     createIcon,
     createButton,
-    createHeader,
-    createBody,
-    createFooter
+    // createHeader,
+    // createBody,
+    // createFooter
 } = require('./node-factory');
 const { emptyNode } = require('./utils');
 const { loadTodos, saveTodos } = require('./todos-dao'); // persistance
@@ -20,12 +20,13 @@ const createTodoBtn = document.querySelector('#create-new-todo');
 
 
 const todos = loadTodos();
-let id = todos[todos.length -1].id;
+let id = todos.length > 0 ? todos[todos.length -1].id : 1;
 
-function addTodo (text) {
+function addTodo (title, description) {
     const newTodo = {
         id: ++id,
-        text: text,
+        title: title, // TODO: change key to title
+        description: description,
         done: false
     }
     todos.push(newTodo);
@@ -53,6 +54,17 @@ function removeTodo (id) {
     renderTodos();
 }
 
+function updateTodo (id, title, description) {
+    todos.map((todo, index) => {
+        if (todo.id === id) {
+            todo.title = title,
+            todo.description = description
+        }
+    });
+    saveTodos(todos);
+    renderTodos();
+}
+
 
 function renderTodos () {
 
@@ -62,7 +74,7 @@ function renderTodos () {
     todos.map((todo) => {
 
         /* Header */
-        const todoHeader = createHeader(todo.text);
+        const todoHeader = createHeader(todo.title);
 
         /* Todo item */
         const todoItem = document.createElement('li');
@@ -98,30 +110,156 @@ function renderTodos () {
     });
 }
 
-function addTodoBody (todoItem, todo) {
-    const todoBody = createBody(todo);
+function addTodoBody (todoItem, todo, editMode) {
+    removeTodoBody(todoItem);
+    const todoBody = createBody(todoItem, todo, editMode);
     todoItem.appendChild(todoBody);
+    if (editMode) todoItem.getElementsByTagName('input')[0].focus();
 }
 
-function addTodoFooter (todoItem, todo) {
-    const todoFooter = createFooter(todo, removeTodo, toggleDone);
+function addTodoFooter (todoItem, todo, editMode) {
+    removeTodoFooter(todoItem);
+    const todoFooter = createFooter(todoItem, todo, editMode);
     todoItem.appendChild(todoFooter);
 }
 
 function removeTodoBody (todoItem) {
     const elems = todoItem.getElementsByClassName('body');
-    todoItem.removeChild(elems[0]);
+    if (elems.length > 0) todoItem.removeChild(elems[0]);
 }
 function removeTodoFooter (todoItem) {
     const elems = todoItem.getElementsByClassName('footer');
-    todoItem.removeChild(elems[0]);
+    if (elems.length > 0) todoItem.removeChild(elems[0]);
+}
+
+function createHeader (title) {
+    /* Chevron icon */
+    const expandBtn = createButton({
+        icon: 'expand_more',
+        classes: ['btn', 'btn-round', 'btn-small', 'transparent']
+    });
+
+    /* header */
+    const header = document.createElement('div');
+    header.classList.add('header');
+    header.innerHTML = title;
+    header.appendChild(expandBtn);
+
+    return header;
+}
+
+function createBody (todoItem, todo, editMode) {
+    const body = document.createElement('div');
+    body.classList.add('body');
+
+    if (editMode) {
+
+        const titleInput = document.createElement('input');
+        titleInput.setAttribute('type', 'text');
+        titleInput.value = todo.title;
+        const descriptionInput = document.createElement('textarea');
+        descriptionInput.value = todo.description ? todo.description : '';
+        body.classList.add('edit-mode');
+        body.appendChild(titleInput);
+        body.appendChild(descriptionInput);
+
+    } else {
+
+        // const title = document.createElement('h3');
+        const description = document.createElement('p');
+        // title.innerHTML = todo.title;
+        description.innerHTML = todo.description ? todo.description : '¯\\_(ツ)_/¯';
+        // body.appendChild(title);
+        body.appendChild(description);
+    }
+
+    return body;
+}
+
+function createFooter (todoItem, todo, editMode) {
+
+    /* Edit button */
+    const editBtn = createButton({
+        icon: 'edit',
+        id: 'edit-todo-' + todo.id,
+        classes: ['btn', 'btn-round', 'btn-small', 'btn-primary', 'btn-shadow'],
+        clickHandler: function (e) {
+            e.stopPropagation();
+            addTodoBody(todoItem, todo, true);
+            addTodoFooter (todoItem, todo, true);
+        }
+    });
+
+    /* Delete button */
+    const deleteBtn = createButton({
+        icon: 'delete',
+        id: 'delete-todo-' + todo.id,
+        classes: ['btn', 'btn-round', 'btn-small', 'btn-primary', 'btn-shadow'],
+        clickHandler: function (e) {
+            e.stopPropagation();
+            removeTodo(e.target.id.match(/\d+/g).map(Number));
+        }
+    });
+
+    /* Toggle done button */
+    const toggleStatusBtn = createButton({
+        icon: todo.done ? 'keyboard_return' : 'check',
+        id: 'todo-' + todo.id,
+        classes: ['btn', 'btn-round', 'btn-small', 'btn-primary', 'btn-shadow'],
+        clickHandler: function (e) {
+            e.stopPropagation();
+            toggleDone(e.target.id.match(/\d+/g).map(Number));
+        }
+    });
+
+    /****************
+        EDIT MODE
+    *****************/
+
+    /* Save edit btn */
+    const saveEditBtn = createButton({
+        text: 'save',
+        id: 'save-edit-todo-' + todo.id,
+        classes: ['btn', 'btn-secondary', 'btn-shadow'],
+        clickHandler: function (e) {
+            e.stopPropagation();
+            const title = todoItem.getElementsByTagName('input')[0].value;
+            const description = todoItem.getElementsByTagName('textarea')[0].value;
+            updateTodo(todo.id, title, description);
+        }
+    });
+
+    const cancelEditBtn = createButton({
+        text: 'cancel',
+        id: 'cancel-edit-todo-' + todo.id,
+        classes: ['btn', 'btn-primary', 'btn-shadow'],
+        clickHandler: function (e) {
+            e.stopPropagation();
+            addTodoBody(todoItem, todo);
+            addTodoFooter (todoItem, todo);
+        }
+    });
+
+    const footer = document.createElement('div');
+    footer.classList.add('footer');
+
+    if (!editMode) {
+        if (!todo.done) footer.appendChild(editBtn);
+        footer.appendChild(deleteBtn);
+        footer.appendChild(toggleStatusBtn);
+    } else {
+        footer.appendChild(saveEditBtn);
+        footer.appendChild(cancelEditBtn);
+    }
+
+    return footer;
 }
 
 /* Render Todos on init */
 renderTodos();
 
-ipcRenderer.on('add-new-todo', (event, text) => {
-    addTodo(text);
+ipcRenderer.on('add-new-todo', (event, todo) => {
+    addTodo(todo.title, todo.description);
 });
 
 // createTodoBtn.addEventListener('click', () => {

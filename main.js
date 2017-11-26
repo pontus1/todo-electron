@@ -20,8 +20,9 @@ function createWindow() {
     mainWindow.webContents.openDevTools();  // Open the DevTools.
 
     // IPC
-    ipcMain.on('request-add-todo', (event, text) => {
-        mainWindow.webContents.send('add-new-todo', text);
+    ipcMain.on('request-add-todo', (event, todo) => {
+
+        mainWindow.webContents.send('add-new-todo', todo);
     });
 
     ipcMain.on('show-empty-input-dialog', (e) => {

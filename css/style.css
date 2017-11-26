@@ -39,7 +39,7 @@ li {
     /*display: flex;
     justify-content: space-between;
     align-items: center;*/
-    height: 50px;
+    min-height: 50px;
     margin-bottom: 15px;
     list-style-type: none;
     /*padding: 0 15px;*/
@@ -57,7 +57,7 @@ li:hover {
 }
 
 li.expanded {
-    height: 300px;
+    /*min-height: 300px;*/
 }
 
 /* Expanded Todo */
@@ -66,29 +66,47 @@ li > .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 50px;
+    min-height: 50px;
     /*margin-bottom: 15px;*/
     padding: 0 15px;
     cursor: pointer;
+    color: #8d6e63; /* primary */
+    font-weight: bold;
 }
 
 li > .body {
-    height: calc(200px - 15px * 2); /* - padding-top & bottom */
-    padding: 15px;
+    /*height: calc(200px - 15px * 2); /* - padding-top & bottom */
+    padding: 0 15px;
     /* description text */
     font-size: 14px;
     text-align: justify;
-    color: #8d6e63; /* primary */
-
+    /*color: #8d6e63; /* primary */
+    display: flex;
+    flex-direction: column;
     /*border: 1px solid red;*/
 }
 
 li > .footer {
-    height: 50px;
+    height: 60px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
     /*border: 1px solid blue;*/
+}
+
+li > .body > p {
+    line-height: 1.5;
+}
+
+li > .body.edit-mode > input {
+    font-weight: bold;
+    color: #8d6e63; /* primary */
+}
+
+li > .body.edit-mode > textarea {
+    height: 100%;
+    margin-top: 15px;
+    margin-bottom: 0;
 }
 
 li > .footer > .btn {
@@ -178,6 +196,7 @@ header {
 
 .form-container > input, textarea {
     margin-bottom: 15px;
+    line-height: 1.5;
     /*padding: 15px;*/
 }
 
@@ -195,11 +214,18 @@ textarea,
 input[type='text'] {
     font-size: 14px;
     padding: 15px;
-    border: 1px solid #000;
+    border: 1px solid #CCC;
 }
 
 input[type='text'] {
     height: 40px;
     max-height: 40px;
+    min-height: 40px;
     padding: 0 15px;
+}
+
+input:focus,
+textarea:focus,
+button:focus {
+    outline: 2px solid #ffc947;
 }
